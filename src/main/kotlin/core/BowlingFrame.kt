@@ -39,4 +39,21 @@ data class BowlingFrame(
     fun notSpareNotStrike() =
         first != null && second != null && (first!! + second!!) < BowlingConstants.ALL_PINS_DOWN_VALUE
 
+
+    fun getPinFalls(): String {
+        return when {
+            strike() -> {
+                val s = if (second != null) second else ""
+                val t = if (third != null) third else ""
+                "\tX\t $s \t $t"
+            }
+            spare() -> "$first \t/\t"
+            else -> "$first \t $second\t"
+        }
+    }
+
+    fun getScoreAsString(): String {
+        return "\t$accumulativeScore\t"
+    }
+
 }

@@ -52,7 +52,17 @@ class ScoreSheet(val player: String) {
 
 
     override fun toString(): String {
-        return "PlayerFrames(player='$player', frames=${frames.contentToString()})"
+        //return "$player \nPinfalls \t ${frames.contentToString()})"
+        var res = "$player \n"
+        res += "Pinfalls\t\t"
+        frames.forEach {
+            res += "${it.getPinFalls()}"
+        }
+        res += "\nScore\t\t"
+        frames.forEach {
+            res += "${it.getScoreAsString()}"
+        }
+        return res
     }
 
     private fun getNextFrame(): BowlingFrame? = frames.find { !it.complete() }
