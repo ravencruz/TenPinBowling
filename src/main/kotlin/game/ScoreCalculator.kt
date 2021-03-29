@@ -13,22 +13,28 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
         calculateIndividualFrameScore()
 
         scoreSheet.frames.forEachIndexed { index, frame ->
+
+            val previous = if (index-1 >= 0) scoreSheet.frames[index-1].accumulativeScore else 0
+
             frame.accumulativeScore =
                 when {
-//                    frame.notSpareNotStrike() -> currentFirst + currentSecond
                     frame.spare() -> {
 
+                        previous +
                         frame.frameScore +
                             if (index + 1 < scoreSheet.frames.size)
                                 scoreSheet.frames[index + 1].first!! //TODO remove !!
                             else 0
-
                     }
+
                     frame.strike() -> {
-
-                        frame.frameScore + getNextTwoScoresForStrike(index)
-
+                        previous + frame.frameScore + getNextTwoScoresForStrike(index)
                     }
+
+                    frame.notSpareNotStrike() -> {
+                        previous + frame.frameScore
+                    }
+
                     else -> -1//TODO throw exception
                 }
         }

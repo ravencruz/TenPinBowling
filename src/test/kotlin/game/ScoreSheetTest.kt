@@ -84,4 +84,19 @@ internal class ScoreSheetTest {
         Assertions.assertEquals(20, jeffScoreSheet.getAccumulativeScore(1))
     }
 
+    @Test
+    fun `on non strike and non spare rule is prev plus current`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
+        Assertions.assertEquals(2, frameList.size)
+
+        val jeffScoreSheet: ScoreSheet = frameList[0]
+        Assertions.assertEquals("Jeff", jeffScoreSheet.player)
+
+        val calculator = ScoreCalculator(jeffScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(39, jeffScoreSheet.getAccumulativeScore(2))
+    }
+
 }
