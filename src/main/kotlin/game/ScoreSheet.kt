@@ -50,6 +50,10 @@ class ScoreSheet(val player: String) {
         return frames[frame - 1].frameScore
     }
 
+    fun getAccumulativeScore(frame: Int): Int {
+        return frames[frame - 1].accumulativeScore
+    }
+
     override fun toString(): String {
         return "PlayerFrames(player='$player', frames=${frames.contentToString()})"
     }

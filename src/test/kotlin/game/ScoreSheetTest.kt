@@ -22,7 +22,7 @@ internal class ScoreSheetTest {
     }
 
     @Test
-    fun `on spares rule is you get 10 pins plus the next ball`() {
+    fun `spare frame value`() {
         val reader = BowlingFrameFileReader()
         val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
         Assertions.assertEquals(2, frameList.size)
@@ -36,7 +36,37 @@ internal class ScoreSheetTest {
         val calculator = ScoreCalculator(jhonScoreSheet)
         calculator.fillScores()
 
-        Assertions.assertEquals(10, jhonScoreSheet.getScore(1))
+        Assertions.assertEquals(BowlingConstants.ALL_PINS_DOWN_VALUE, jhonScoreSheet.getScore(1))
+    }
+
+    @Test
+    fun `strike frame value`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
+        Assertions.assertEquals(2, frameList.size)
+
+        val jeffScoreSheet: ScoreSheet = frameList[0]
+        Assertions.assertEquals("Jeff", jeffScoreSheet.player)
+
+        val calculator = ScoreCalculator(jeffScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(BowlingConstants.ALL_PINS_DOWN_VALUE, jeffScoreSheet.getScore(1))
+    }
+
+
+    @Test
+    fun `on spares rule is you get 10 pins plus the next ball`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
+        Assertions.assertEquals(2, frameList.size)
+
+        val jhonScoreSheet: ScoreSheet = frameList[1]
+
+        val calculator = ScoreCalculator(jhonScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(16, jhonScoreSheet.getAccumulativeScore(1))
     }
 
     @Test
@@ -51,8 +81,7 @@ internal class ScoreSheetTest {
         val calculator = ScoreCalculator(jeffScoreSheet)
         calculator.fillScores()
 
-        Assertions.assertEquals(BowlingConstants.ALL_PINS_DOWN_VALUE, jeffScoreSheet.getScore(1))
+        Assertions.assertEquals(20, jeffScoreSheet.getAccumulativeScore(1))
     }
-
 
 }
