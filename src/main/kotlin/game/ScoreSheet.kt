@@ -41,12 +41,8 @@ class ScoreSheet(val player: String) {
         }
     }
 
-    //TODO simplify
-    private fun getNextFrame(): BowlingFrame? {
-        return frames.find { !it.complete() }
-    }
 
-    fun getScore(frame: Int): Int {
+    fun getFrameScore(frame: Int): Int {
         return frames[frame - 1].frameScore
     }
 
@@ -54,9 +50,12 @@ class ScoreSheet(val player: String) {
         return frames[frame - 1].accumulativeScore
     }
 
+
     override fun toString(): String {
         return "PlayerFrames(player='$player', frames=${frames.contentToString()})"
     }
+
+    private fun getNextFrame(): BowlingFrame? = frames.find { !it.complete() }
 
 
 }

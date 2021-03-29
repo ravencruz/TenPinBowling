@@ -43,10 +43,18 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
     private fun getNextTwoScoresForStrike(currentIndex: Int): Int {
 
         return if (currentIndex + 1 < scoreSheet.frames.size) {
+
             val nextFrame = scoreSheet.frames[currentIndex + 1]
 
             if (nextFrame.strike()) {
-                10000
+
+                10 + if (currentIndex + 2 < scoreSheet.frames.size)
+                        scoreSheet.frames[currentIndex + 2].first!! //TODO remove!!
+
+                    else if (currentIndex == 10-1-1)//penultimo
+                        scoreSheet.frames[currentIndex + 1].second!! //TODO remove!!
+                    else 0
+
             } else {
                 nextFrame.frameScore
             }
@@ -63,12 +71,18 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
             val currentFirst = frame.first ?: 0
             val currentSecond = frame.second ?: 0
+            val currentThird = frame.third ?: 0
 
             frame.frameScore =
                 when {
                     frame.notSpareNotStrike() -> currentFirst + currentSecond
                     frame.spare() -> BowlingConstants.ALL_PINS_DOWN_VALUE
-                    frame.strike() -> BowlingConstants.ALL_PINS_DOWN_VALUE
+
+                    frame.strike() -> {
+                        if (frame.position < 10) BowlingConstants.ALL_PINS_DOWN_VALUE
+                        else currentFirst + currentSecond + currentThird
+                    }
+
                     else -> -1//TODO throw exception
                 }
 
