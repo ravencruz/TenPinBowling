@@ -28,13 +28,13 @@ class BowlingFrameFileReader {
                 newFrame
             }
 
+            //TODO constant meaning
             val score = if (tuplePlayerScore[1] == "F") 0 else tuplePlayerScore[1].toInt()
-            frame.setShot( score)
+            frame.setShot(score)
         }
 
         return playerFrames.map { it.value }
     }
 
-    fun readFileAsLinesUsingUseLines(fileName: String): List<String>
-            = File(fileName).useLines { it.toList() }
+    fun readFileAsLinesUsingUseLines(fileName: String): List<String> = File(fileName).useLines { it.toList() }
 }

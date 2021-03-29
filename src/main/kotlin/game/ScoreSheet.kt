@@ -1,11 +1,11 @@
 package game
 
-import core.Frame
+import core.BowlingFrame
 
 class ScoreSheet(val player: String) {
 
     val frames = Array(10) {
-        Frame(it + 1)
+        BowlingFrame(it + 1)
     }
 
     fun setShot(position: Int, shotScore: Int) {
@@ -41,26 +41,13 @@ class ScoreSheet(val player: String) {
         }
     }
 
-    private fun getNextFrame(): Frame? {
+    //TODO simplify
+    private fun getNextFrame(): BowlingFrame? {
         return frames.find { !it.complete() }
     }
 
-    fun getScore(index: Int): Int {
-        val frameScore = frames[index].getScore()
-
-        val res =
-            if (frameScore < 10) {
-                frameScore
-            } else
-                if (frameScore == 10 && frames[index + 1].first == null) {
-                    0 //TODO porq dependemos del valor sig para poder calcular
-                    // en realiadd esto no deberia darse ponele mmm o lanzamos una exception ?
-                } else {
-                    //TODO remove !!
-                    frameScore + frames[index + 1].first!!
-                }
-
-        return res
+    fun getScore(frame: Int): Int {
+        return frames[frame - 1].frameScore
     }
 
     override fun toString(): String {
