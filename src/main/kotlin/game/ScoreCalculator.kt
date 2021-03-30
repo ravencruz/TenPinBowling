@@ -20,17 +20,12 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
             frame.frameScore =
                 when {
-                    frame.notSpareNotStrike() -> currentFirst + currentSecond
-                    frame.spare() -> GameConstants.ALL_PINS_DOWN_VALUE
-
                     frame.strike() -> {
-                        if (frame.position < 10) GameConstants.ALL_PINS_DOWN_VALUE
+                        if (frame.position < GameConstants.FRAME_LIMIT) GameConstants.ALL_PINS_DOWN_VALUE
                         else currentFirst + currentSecond + currentThird
                     }
-
-                    else -> throw BowlingException(ErrorMessage.UNEXPECTED_ERROR)
+                    else -> currentFirst + currentSecond
                 }
-
         }
     }
 
@@ -41,7 +36,7 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
             frame.accumulativeScore =
                 when {
-                    frame.spare() -> previous + frame.frameScore + getNextScoresForSpare(index)
+                    frame.spare() -> previous + frame.frameScore + getNextScoreForSpare(index)
                     frame.strike() -> previous + frame.frameScore + getNextTwoScoresForStrike(index)
                     frame.notSpareNotStrike() -> previous + frame.frameScore
                     else -> throw BowlingException(ErrorMessage.UNEXPECTED_ERROR)
@@ -49,7 +44,7 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
         }
     }
 
-    private fun getNextScoresForSpare(index: Int): Int {
+    private fun getNextScoreForSpare(index: Int): Int {
         return if (index + 1 < scoreSheet.frames.size)
             scoreSheet.frames[index + 1].first!! //TODO remove !!
         else 0
@@ -60,10 +55,10 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
         return if (currentIndex + 1 < scoreSheet.frames.size) {
 
             val nextFrame = scoreSheet.frames[currentIndex + 1]
-
             if (nextFrame.strike()) {
 
-                10 + if (currentIndex + 2 < scoreSheet.frames.size)
+                GameConstants.ALL_PINS_DOWN_VALUE +
+                    if (currentIndex + 2 < scoreSheet.frames.size)
                         scoreSheet.frames[currentIndex + 2].first!! //TODO remove!!
 
                     else if (currentIndex == 10-1-1)//penultimo

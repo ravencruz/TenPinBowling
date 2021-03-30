@@ -4,9 +4,7 @@ import game.ScoreSheet
 import reader.BowlingFileReader
 import reader.BowlingFrameParser
 
-/**
- *
- */
+
 class Main {
 
     fun execute(file: String) {
@@ -36,9 +34,12 @@ fun main(args: Array<String>) {
     println("Welcome to Bowling Program.")
     println("Arguments: ${args.joinToString()}")
 
-    val main = Main()
-    //TODO remove
-    val fileParam = if(args.isNotEmpty()) args[0] else "/home/scruz/repos/personal/challenges/TenPinBowling/src/main/resources/sample.txt"
-    main.execute(fileParam)
+    if (args.isNotEmpty()) {
+        val main = Main()
+        main.execute(args[0])
+    } else {
+        println("The full path of the file is required i.e: \n java -jar target/consoleApp-1.0.0-jar-with-dependencies.jar /sample.txt")
+    }
+
 }
 
