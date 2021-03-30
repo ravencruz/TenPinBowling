@@ -1,38 +1,60 @@
 package core
 
-import constants.BowlingConstants
+import constants.GameConstants
 
 data class BowlingFrame(
     val position: Int,
+
     var first: Int? = null,
     var second: Int? = null,
     var third: Int? = null,
+
     var frameScore: Int = 0,
+    var accumulativeScore: Int = 0,
 ) {
 
     fun complete(): Boolean {
 
-        return if (position == 10) {
+        return if (position == GameConstants.FRAME_LIMIT) {
 
-            if (first == 10) //TODO its a STRIKE. its a better way to express business logic ?
+            if (first == GameConstants.ALL_PINS_DOWN_VALUE)
                 second != null && third != null
             else first != null && second != null
 
         } else {
+            // si no es la ultima posicion
             if (first != null && second != null) {
                 true
             } else {
-                first == 10
+                first == GameConstants.ALL_PINS_DOWN_VALUE
             }
         }
+
     }
 
     //TODO remove !!
-    fun spare() = first != null && second != null && (first!! + second!!) == BowlingConstants.ALL_PINS_DOWN_VALUE
+    fun spare() = first != null && second != null && (first!! + second!!) == GameConstants.ALL_PINS_DOWN_VALUE
 
-    fun strike() = second == null && first == BowlingConstants.ALL_PINS_DOWN_VALUE
+    fun strike() = first == GameConstants.ALL_PINS_DOWN_VALUE
 
     fun notSpareNotStrike() =
-        first != null && second != null && (first!! + second!!) < BowlingConstants.ALL_PINS_DOWN_VALUE
+        first != null && second != null && (first!! + second!!) < GameConstants.ALL_PINS_DOWN_VALUE
+
+
+    fun getPinFallsAsString(): String {
+        return when {
+            strike() -> {
+                val strikeSecond = if (second != null) "\t $second \t" else ""
+                val strikeThird = if (third != null) third else ""
+                "\t${GameConstants.FRAME_RESULT_STRIKE} $strikeSecond $strikeThird"
+            }
+            spare() -> "$first \t${GameConstants.FRAME_RESULT_SPARE}\t"
+            else -> "$first \t $second\t"
+        }
+    }
+
+    fun getScoreAsString(): String {
+        return "\t$accumulativeScore\t"
+    }
 
 }

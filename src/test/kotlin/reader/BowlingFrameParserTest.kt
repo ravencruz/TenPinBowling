@@ -1,23 +1,20 @@
 package reader
 
+import exceptions.BowlingException
 import game.ScoreSheet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 
-internal class ReaderFileTest {
+internal class BowlingFrameParserTest {
 
-    @Test
-    fun `read file`() {
-        val reader = BowlingFrameFileReader()
-        val res = reader.readFileAsLinesUsingUseLines(javaClass.getResource("/kotlin.txt").file)
-        Assertions.assertEquals(5, res.size)
-    }
 
     @Test
     fun `read players from file`() {
-        val reader = BowlingFrameFileReader()
-        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/one_shot.txt").file)
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/one_shot.txt")
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
         Assertions.assertEquals(2, frameList.size)
 
         val scoreSheet1: ScoreSheet = frameList[0]
@@ -29,8 +26,9 @@ internal class ReaderFileTest {
 
     @Test
     fun `load players score with one shot`() {
-        val reader = BowlingFrameFileReader()
-        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/one_shot.txt").file)
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/one_shot.txt")
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
         Assertions.assertEquals(2, frameList.size)
 
         val scoreSheet1: ScoreSheet = frameList[0]
@@ -42,8 +40,9 @@ internal class ReaderFileTest {
 
     @Test
     fun `load players score with more shots`() {
-        val reader = BowlingFrameFileReader()
-        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/five_shots.txt").file)
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/five_shots.txt")
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
         Assertions.assertEquals(2, frameList.size)
 
         val scoreSheet1: ScoreSheet = frameList[0]
@@ -87,8 +86,9 @@ internal class ReaderFileTest {
 
     @Test
     fun `load players all score`() {
-        val reader = BowlingFrameFileReader()
-        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/ten_shots.txt")
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
         Assertions.assertEquals(2, frameList.size)
 
         val scoreSheet1: ScoreSheet = frameList[0]
@@ -126,8 +126,9 @@ internal class ReaderFileTest {
 
     @Test
     fun `rules is in the 10th frame a strike gives you two more shots`() {
-        val reader = BowlingFrameFileReader()
-        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/ten_shots.txt").file)
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/ten_shots.txt")
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
         Assertions.assertEquals(2, frameList.size)
 
         val scoreSheet1: ScoreSheet = frameList[0]
@@ -144,6 +145,28 @@ internal class ReaderFileTest {
 
         println(scoreSheet1)
         println(scoreSheet2)
+    }
+
+    @Test
+    fun `out of range score value should throw exception`() {
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_incorrect_value.txt")
+        //val resource = javaClass.getResource("/bad_input_incorrect_value.txt").file
+
+        assertThrows<BowlingException> {
+            reader.readFrames(lines)
+        }
+    }
+
+    @Test
+    fun `incorrect value in input should throw exception`() {
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_not_number.txt")
+        //val resource = javaClass.getResource("/bad_input_not_number.txt").file
+
+        assertThrows<BowlingException> {
+            reader.readFrames(lines)
+        }
     }
 
 }
