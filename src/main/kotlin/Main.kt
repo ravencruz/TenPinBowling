@@ -1,4 +1,5 @@
 import constants.GameConstants
+import exceptions.BowlingException
 import game.ScoreCalculator
 import game.ScoreSheet
 import reader.BowlingFileReader
@@ -36,7 +37,12 @@ fun main(args: Array<String>) {
 
     if (args.isNotEmpty()) {
         val main = Main()
-        main.execute(args[0])
+        try {
+            main.execute(args[0])
+        } catch (e: BowlingException) {
+            println(e.message)
+        }
+
     } else {
         println("The full path of the file is required i.e: \n java -jar target/consoleApp-1.0.0-jar-with-dependencies.jar /sample.txt")
     }
