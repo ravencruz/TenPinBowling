@@ -1,3 +1,4 @@
+import constants.BowlingConstants
 import game.ScoreCalculator
 import game.ScoreSheet
 import reader.BowlingFrameFileReader
@@ -18,11 +19,8 @@ class Main {
         calculator.fillScores()
 
 
-
-
         println(getHeader())
         println(jeffScoreSheet)
-
 
         val jhonScoreSheet: ScoreSheet = scores[1]
         val calculator2 = ScoreCalculator(jhonScoreSheet)
@@ -33,7 +31,7 @@ class Main {
 
     private fun getHeader(): String {
         var header = "Frame \t\t"
-        for (frameX in 1..10) {
+        for (frameX in 1..BowlingConstants.FRAME_LIMIT) {
             header += "\t $frameX \t"
         }
         return header

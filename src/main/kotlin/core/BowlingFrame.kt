@@ -15,25 +15,26 @@ data class BowlingFrame(
 
     fun complete(): Boolean {
 
-        return if (position == 10) { //TODO last position
+        return if (position == BowlingConstants.FRAME_LIMIT) {
 
-            if (first == 10) //TODO its a STRIKE. its a better way to express business logic ?
+            if (first == BowlingConstants.ALL_PINS_DOWN_VALUE)
                 second != null && third != null
             else first != null && second != null
 
         } else {
+            // si no es la ultima posicion
             if (first != null && second != null) {
                 true
             } else {
-                first == 10
+                first == BowlingConstants.ALL_PINS_DOWN_VALUE
             }
         }
+
     }
 
     //TODO remove !!
     fun spare() = first != null && second != null && (first!! + second!!) == BowlingConstants.ALL_PINS_DOWN_VALUE
 
-//    fun strike() = second == null && first == BowlingConstants.ALL_PINS_DOWN_VALUE
     fun strike() = first == BowlingConstants.ALL_PINS_DOWN_VALUE
 
     fun notSpareNotStrike() =

@@ -29,8 +29,8 @@ class BowlingFrameFileReader {
             }
 
             //TODO constant meaning
-            val score = if (tuplePlayerScore[1] == "F") 0 else tuplePlayerScore[1].toInt()
-            frame.setShot(score)
+            val ballRoll = if (tuplePlayerScore[1] == "F") 0 else tuplePlayerScore[1].toInt()
+            frame.setShot(ballRoll)
         }
 
         return playerFrames.map { it.value }

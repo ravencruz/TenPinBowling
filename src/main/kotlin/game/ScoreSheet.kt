@@ -1,25 +1,14 @@
 package game
 
+import constants.BowlingConstants
 import core.BowlingFrame
 
 class ScoreSheet(val player: String) {
 
-    val frames = Array(10) {
+    val frames = Array(BowlingConstants.FRAME_LIMIT) {
         BowlingFrame(it + 1)
     }
 
-    fun setShot(position: Int, shotScore: Int) {
-        val currentFrame = frames[position]
-
-        if (currentFrame.first == null) {
-            currentFrame.first = shotScore
-
-        } else if (currentFrame.second == null) {
-            currentFrame.second = shotScore
-        }
-    }
-
-    // smart shot
     fun setShot(shotScore: Int) {
 
         val currentFrame = getNextFrame()
@@ -56,11 +45,11 @@ class ScoreSheet(val player: String) {
         var res = "$player \n"
         res += "Pinfalls\t\t"
         frames.forEach {
-            res += "${it.getPinFalls()}"
+            res += it.getPinFalls()
         }
         res += "\nScore\t\t"
         frames.forEach {
-            res += "${it.getScoreAsString()}"
+            res += it.getScoreAsString()
         }
         return res
     }
