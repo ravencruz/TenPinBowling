@@ -12,33 +12,14 @@ class ScoreSheet(val player: String) {
     fun setShot(shotScore: Int) {
 
         val currentFrame = getNextFrame()
-
-        //TODO fix != null
-        if (currentFrame != null) {
-            //TODO fix != null
-            if (currentFrame.first == null) {
-                currentFrame.first = shotScore
-
-                //TODO fix != null
-            } else if (currentFrame.second == null) {
-                currentFrame.second = shotScore
-
-                //TODO fix != null
-            } else if (currentFrame.third == null) {
-                currentFrame.third = shotScore
+        currentFrame?.let {
+            when {
+                currentFrame.first == null -> currentFrame.first = shotScore
+                currentFrame.second == null -> currentFrame.second = shotScore
+                currentFrame.third == null ->  currentFrame.third = shotScore
             }
         }
     }
-
-
-    fun getFrameScore(frame: Int): Int {
-        return frames[frame - 1].frameScore
-    }
-
-    fun getAccumulativeScore(frame: Int): Int {
-        return frames[frame - 1].accumulativeScore
-    }
-
 
     override fun toString(): String {
 
@@ -55,6 +36,5 @@ class ScoreSheet(val player: String) {
     }
 
     private fun getNextFrame(): BowlingFrame? = frames.find { !it.complete() }
-
 
 }
