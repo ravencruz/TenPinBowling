@@ -10,5 +10,10 @@ object BowlingFileReader {
         return File(resourceFile).useLines { it.toList() }
     }
 
+    fun readFileAsLinesUsingBufferedReader(fullPath: String): List<String> {
+
+        return File(fullPath).bufferedReader().readLines()
+    }
+
 
 }
