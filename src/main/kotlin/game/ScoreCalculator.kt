@@ -1,13 +1,8 @@
 package game
 
-import constants.BowlingConstants
-import core.BowlingFrame
+import constants.GameConstants
 
 class ScoreCalculator(private val scoreSheet: ScoreSheet) {
-
-    private val LAST_FRAME_INDEX = 10 - 1
-
-
 
     fun fillScores() {
         calculateIndividualFrameScore()
@@ -62,8 +57,6 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
         } else {
             0
         }
-
-        //return 0
     }
 
     private fun calculateIndividualFrameScore() {
@@ -76,10 +69,10 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
             frame.frameScore =
                 when {
                     frame.notSpareNotStrike() -> currentFirst + currentSecond
-                    frame.spare() -> BowlingConstants.ALL_PINS_DOWN_VALUE
+                    frame.spare() -> GameConstants.ALL_PINS_DOWN_VALUE
 
                     frame.strike() -> {
-                        if (frame.position < 10) BowlingConstants.ALL_PINS_DOWN_VALUE
+                        if (frame.position < 10) GameConstants.ALL_PINS_DOWN_VALUE
                         else currentFirst + currentSecond + currentThird
                     }
 

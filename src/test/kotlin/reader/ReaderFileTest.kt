@@ -1,8 +1,11 @@
 package reader
 
+import exceptions.BowlingException
 import game.ScoreSheet
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.lang.Exception
 
 
 internal class ReaderFileTest {
@@ -144,6 +147,26 @@ internal class ReaderFileTest {
 
         println(scoreSheet1)
         println(scoreSheet2)
+    }
+
+    @Test
+    fun `out of range score value should throw exception`() {
+        val reader = BowlingFrameFileReader()
+        val resource = javaClass.getResource("/bad_input_incorrect_value.txt").file
+
+        assertThrows<BowlingException> {
+            reader.readFramesFromFile(resource)
+        }
+    }
+
+    @Test
+    fun `incorrect value in input should throw exception`() {
+        val reader = BowlingFrameFileReader()
+        val resource = javaClass.getResource("/bad_input_not_number.txt").file
+
+        assertThrows<BowlingException> {
+            reader.readFramesFromFile(resource)
+        }
     }
 
 }

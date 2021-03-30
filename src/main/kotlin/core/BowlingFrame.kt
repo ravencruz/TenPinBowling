@@ -1,6 +1,6 @@
 package core
 
-import constants.BowlingConstants
+import constants.GameConstants
 
 data class BowlingFrame(
     val position: Int,
@@ -15,9 +15,9 @@ data class BowlingFrame(
 
     fun complete(): Boolean {
 
-        return if (position == BowlingConstants.FRAME_LIMIT) {
+        return if (position == GameConstants.FRAME_LIMIT) {
 
-            if (first == BowlingConstants.ALL_PINS_DOWN_VALUE)
+            if (first == GameConstants.ALL_PINS_DOWN_VALUE)
                 second != null && third != null
             else first != null && second != null
 
@@ -26,19 +26,19 @@ data class BowlingFrame(
             if (first != null && second != null) {
                 true
             } else {
-                first == BowlingConstants.ALL_PINS_DOWN_VALUE
+                first == GameConstants.ALL_PINS_DOWN_VALUE
             }
         }
 
     }
 
     //TODO remove !!
-    fun spare() = first != null && second != null && (first!! + second!!) == BowlingConstants.ALL_PINS_DOWN_VALUE
+    fun spare() = first != null && second != null && (first!! + second!!) == GameConstants.ALL_PINS_DOWN_VALUE
 
-    fun strike() = first == BowlingConstants.ALL_PINS_DOWN_VALUE
+    fun strike() = first == GameConstants.ALL_PINS_DOWN_VALUE
 
     fun notSpareNotStrike() =
-        first != null && second != null && (first!! + second!!) < BowlingConstants.ALL_PINS_DOWN_VALUE
+        first != null && second != null && (first!! + second!!) < GameConstants.ALL_PINS_DOWN_VALUE
 
 
     fun getPinFalls(): String {
@@ -46,9 +46,9 @@ data class BowlingFrame(
             strike() -> {
                 val s = if (second != null) second else ""
                 val t = if (third != null) third else ""
-                "\t${BowlingConstants.FRAME_RESULT_STRIKE}\t $s \t $t"
+                "\t${GameConstants.FRAME_RESULT_STRIKE}\t $s \t $t"
             }
-            spare() -> "$first \t${BowlingConstants.FRAME_RESULT_SPARE}\t"
+            spare() -> "$first \t${GameConstants.FRAME_RESULT_SPARE}\t"
             else -> "$first \t $second\t"
         }
     }

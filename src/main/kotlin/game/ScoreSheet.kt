@@ -1,11 +1,11 @@
 package game
 
-import constants.BowlingConstants
+import constants.GameConstants
 import core.BowlingFrame
 
 class ScoreSheet(val player: String) {
 
-    val frames = Array(BowlingConstants.FRAME_LIMIT) {
+    val frames = Array(GameConstants.FRAME_LIMIT) {
         BowlingFrame(it + 1)
     }
 

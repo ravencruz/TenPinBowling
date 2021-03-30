@@ -1,4 +1,4 @@
-import constants.BowlingConstants
+import constants.GameConstants
 import game.ScoreCalculator
 import game.ScoreSheet
 import reader.BowlingFrameFileReader
@@ -31,7 +31,7 @@ class Main {
 
     private fun getHeader(): String {
         var header = "Frame \t\t"
-        for (frameX in 1..BowlingConstants.FRAME_LIMIT) {
+        for (frameX in 1..GameConstants.FRAME_LIMIT) {
             header += "\t $frameX \t"
         }
         return header

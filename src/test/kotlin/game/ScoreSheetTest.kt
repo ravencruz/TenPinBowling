@@ -1,6 +1,6 @@
 package game
 
-import constants.BowlingConstants
+import constants.GameConstants
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import reader.BowlingFrameFileReader
@@ -36,7 +36,7 @@ internal class ScoreSheetTest {
         val calculator = ScoreCalculator(jhonScoreSheet)
         calculator.fillScores()
 
-        Assertions.assertEquals(BowlingConstants.ALL_PINS_DOWN_VALUE, jhonScoreSheet.getFrameScore(1))
+        Assertions.assertEquals(GameConstants.ALL_PINS_DOWN_VALUE, jhonScoreSheet.getFrameScore(1))
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class ScoreSheetTest {
         val calculator = ScoreCalculator(jeffScoreSheet)
         calculator.fillScores()
 
-        Assertions.assertEquals(BowlingConstants.ALL_PINS_DOWN_VALUE, jeffScoreSheet.getFrameScore(1))
+        Assertions.assertEquals(GameConstants.ALL_PINS_DOWN_VALUE, jeffScoreSheet.getFrameScore(1))
     }
 
 
