@@ -10,8 +10,8 @@ import reader.BowlingFrameParser
 class Main {
 
     fun execute(file: String) {
-        val parser = BowlingFrameParser()
         val lines = BowlingFileReader.readFileAsLinesUsingBufferedReader(file)
+        val parser = BowlingFrameParser()
         val scores: List<ScoreSheet> = parser.readFrames(lines)
 
         println(getHeader())
@@ -37,6 +37,7 @@ fun main(args: Array<String>) {
     println("Arguments: ${args.joinToString()}")
 
     val main = Main()
+    //TODO remove
     val fileParam = if(args.isNotEmpty()) args[0] else "/home/scruz/repos/personal/challenges/TenPinBowling/src/main/resources/sample.txt"
     main.execute(fileParam)
 }

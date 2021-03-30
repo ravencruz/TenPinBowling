@@ -41,7 +41,7 @@ data class BowlingFrame(
         first != null && second != null && (first!! + second!!) < GameConstants.ALL_PINS_DOWN_VALUE
 
 
-    fun getPinFalls(): String {
+    fun getPinFallsAsString(): String {
         return when {
             strike() -> {
                 val strikeSecond = if (second != null) "\t $second \t" else ""

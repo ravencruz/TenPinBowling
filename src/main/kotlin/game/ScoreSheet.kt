@@ -45,7 +45,7 @@ class ScoreSheet(val player: String) {
         var res = "$player \n"
         res += "Pinfalls\t\t"
         frames.forEach {
-            res += it.getPinFalls()
+            res += it.getPinFallsAsString()
         }
         res += "\nScore\t\t"
         frames.forEach {

@@ -1,38 +1,58 @@
 package game
 
+import constants.ErrorMessage
 import constants.GameConstants
+import exceptions.BowlingException
 
 class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
     fun fillScores() {
         calculateIndividualFrameScore()
+        calculateAccumulativeScore()
+    }
 
+    private fun calculateIndividualFrameScore() {
+        scoreSheet.frames.forEach { frame ->
+
+            val currentFirst = frame.first ?: 0
+            val currentSecond = frame.second ?: 0
+            val currentThird = frame.third ?: 0
+
+            frame.frameScore =
+                when {
+                    frame.notSpareNotStrike() -> currentFirst + currentSecond
+                    frame.spare() -> GameConstants.ALL_PINS_DOWN_VALUE
+
+                    frame.strike() -> {
+                        if (frame.position < 10) GameConstants.ALL_PINS_DOWN_VALUE
+                        else currentFirst + currentSecond + currentThird
+                    }
+
+                    else -> throw BowlingException(ErrorMessage.UNEXPECTED_ERROR)
+                }
+
+        }
+    }
+
+    private fun calculateAccumulativeScore() {
         scoreSheet.frames.forEachIndexed { index, frame ->
 
             val previous = if (index-1 >= 0) scoreSheet.frames[index-1].accumulativeScore else 0
 
             frame.accumulativeScore =
                 when {
-                    frame.spare() -> {
-
-                        previous +
-                        frame.frameScore +
-                            if (index + 1 < scoreSheet.frames.size)
-                                scoreSheet.frames[index + 1].first!! //TODO remove !!
-                            else 0
-                    }
-
-                    frame.strike() -> {
-                        previous + frame.frameScore + getNextTwoScoresForStrike(index)
-                    }
-
-                    frame.notSpareNotStrike() -> {
-                        previous + frame.frameScore
-                    }
-
-                    else -> -1//TODO throw exception
+                    frame.spare() -> previous + frame.frameScore + getNextScoresForSpare(index)
+                    frame.strike() -> previous + frame.frameScore + getNextTwoScoresForStrike(index)
+                    frame.notSpareNotStrike() -> previous + frame.frameScore
+                    else -> throw BowlingException(ErrorMessage.UNEXPECTED_ERROR)
                 }
         }
+    }
+
+    private fun getNextScoresForSpare(index: Int): Int {
+        return if (index + 1 < scoreSheet.frames.size)
+            scoreSheet.frames[index + 1].first!! //TODO remove !!
+        else 0
     }
 
     private fun getNextTwoScoresForStrike(currentIndex: Int): Int {
@@ -58,29 +78,5 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
             0
         }
     }
-
-    private fun calculateIndividualFrameScore() {
-        scoreSheet.frames.forEach { frame ->
-
-            val currentFirst = frame.first ?: 0
-            val currentSecond = frame.second ?: 0
-            val currentThird = frame.third ?: 0
-
-            frame.frameScore =
-                when {
-                    frame.notSpareNotStrike() -> currentFirst + currentSecond
-                    frame.spare() -> GameConstants.ALL_PINS_DOWN_VALUE
-
-                    frame.strike() -> {
-                        if (frame.position < 10) GameConstants.ALL_PINS_DOWN_VALUE
-                        else currentFirst + currentSecond + currentThird
-                    }
-
-                    else -> -1//TODO throw exception
-                }
-
-        }
-    }
-
 
 }
