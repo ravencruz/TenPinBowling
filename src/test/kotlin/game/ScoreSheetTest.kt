@@ -148,4 +148,49 @@ internal class ScoreSheetTest {
         Assertions.assertEquals(167, jeffScoreSheet.getAccumulativeScore(10))
     }
 
+
+    @Test
+    fun `perfect score`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/perfect_score.txt").file)
+        Assertions.assertEquals(1, frameList.size)
+
+        val carlScoreSheet: ScoreSheet = frameList[0]
+        Assertions.assertEquals("Carl", carlScoreSheet.player)
+
+        val calculator = ScoreCalculator(carlScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(300, carlScoreSheet.getAccumulativeScore(10))
+    }
+
+    @Test
+    fun `all rolls are zero`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/zero_score.txt").file)
+        Assertions.assertEquals(1, frameList.size)
+
+        val carlScoreSheet: ScoreSheet = frameList[0]
+        Assertions.assertEquals("Carl", carlScoreSheet.player)
+
+        val calculator = ScoreCalculator(carlScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(0, carlScoreSheet.getAccumulativeScore(10))
+    }
+
+    @Test
+    fun `all rolls are fouls`() {
+        val reader = BowlingFrameFileReader()
+        val frameList: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/fauls.txt").file)
+        Assertions.assertEquals(1, frameList.size)
+
+        val carlScoreSheet: ScoreSheet = frameList[0]
+        Assertions.assertEquals("Carl", carlScoreSheet.player)
+
+        val calculator = ScoreCalculator(carlScoreSheet)
+        calculator.fillScores()
+
+        Assertions.assertEquals(0, carlScoreSheet.getAccumulativeScore(10))
+    }
 }

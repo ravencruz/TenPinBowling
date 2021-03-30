@@ -15,7 +15,7 @@ class BowlingFrameFileReader {
 
         val fileLines = readFileAsLinesUsingUseLines(fileName)
         fileLines.forEach {
-            val tuplePlayerScore = it.split(Regex("\\s"))
+            val tuplePlayerScore = it.split(Regex("\\s+"))
             val playerName = tuplePlayerScore[0]
 
             val frame = if (playerFrames.contains(playerName)) {

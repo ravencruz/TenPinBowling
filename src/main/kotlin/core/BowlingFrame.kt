@@ -46,9 +46,9 @@ data class BowlingFrame(
             strike() -> {
                 val s = if (second != null) second else ""
                 val t = if (third != null) third else ""
-                "\tX\t $s \t $t"
+                "\t${BowlingConstants.FRAME_RESULT_STRIKE}\t $s \t $t"
             }
-            spare() -> "$first \t/\t"
+            spare() -> "$first \t${BowlingConstants.FRAME_RESULT_SPARE}\t"
             else -> "$first \t $second\t"
         }
     }
