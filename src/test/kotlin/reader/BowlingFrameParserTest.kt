@@ -151,7 +151,6 @@ internal class BowlingFrameParserTest {
     fun `out of range score value should throw exception`() {
         val reader = BowlingFrameParser()
         val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_incorrect_value.txt")
-        //val resource = javaClass.getResource("/bad_input_incorrect_value.txt").file
 
         assertThrows<BowlingException> {
             reader.readFrames(lines)
@@ -162,11 +161,13 @@ internal class BowlingFrameParserTest {
     fun `incorrect value in input should throw exception`() {
         val reader = BowlingFrameParser()
         val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_not_number.txt")
-        //val resource = javaClass.getResource("/bad_input_not_number.txt").file
 
         assertThrows<BowlingException> {
             reader.readFrames(lines)
         }
     }
+
+
+
 
 }

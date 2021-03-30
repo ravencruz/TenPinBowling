@@ -7,8 +7,10 @@ import exceptions.BowlingException
 class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
     fun fillScores() {
-        calculateIndividualFrameScore()
-        calculateAccumulativeScore()
+        if (scoreSheet.isComplete()) {
+            calculateIndividualFrameScore()
+            calculateAccumulativeScore()
+        } else throw BowlingException(ErrorMessage.INSUFFICIENT_DATA)
     }
 
     private fun calculateIndividualFrameScore() {
