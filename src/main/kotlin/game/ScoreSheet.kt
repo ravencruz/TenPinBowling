@@ -41,7 +41,7 @@ class ScoreSheet(val player: String) {
 
 
     override fun toString(): String {
-        //return "$player \nPinfalls \t ${frames.contentToString()})"
+
         var res = "$player \n"
         res += "Pinfalls\t\t"
         frames.forEach {

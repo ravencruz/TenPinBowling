@@ -44,9 +44,9 @@ data class BowlingFrame(
     fun getPinFalls(): String {
         return when {
             strike() -> {
-                val s = if (second != null) second else ""
-                val t = if (third != null) third else ""
-                "\t${GameConstants.FRAME_RESULT_STRIKE}\t $s \t $t"
+                val strikeSecond = if (second != null) "\t $second \t" else ""
+                val strikeThird = if (third != null) third else ""
+                "\t${GameConstants.FRAME_RESULT_STRIKE} $strikeSecond $strikeThird"
             }
             spare() -> "$first \t${GameConstants.FRAME_RESULT_SPARE}\t"
             else -> "$first \t $second\t"

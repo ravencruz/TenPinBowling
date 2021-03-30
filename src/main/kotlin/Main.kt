@@ -12,21 +12,12 @@ class Main {
         val reader = BowlingFrameFileReader()
         val scores: List<ScoreSheet> = reader.readFramesFromFile(javaClass.getResource("/sample.txt").file)
 
-        println(scores.size)
-
-        val jeffScoreSheet: ScoreSheet = scores[0]
-        val calculator = ScoreCalculator(jeffScoreSheet)
-        calculator.fillScores()
-
-
         println(getHeader())
-        println(jeffScoreSheet)
-
-        val jhonScoreSheet: ScoreSheet = scores[1]
-        val calculator2 = ScoreCalculator(jhonScoreSheet)
-        calculator2.fillScores()
-
-        println(jhonScoreSheet)
+        scores.forEach {
+            val calculator = ScoreCalculator(it)
+            calculator.fillScores()
+            println(it)
+        }
     }
 
     private fun getHeader(): String {
@@ -39,8 +30,8 @@ class Main {
 
 }
 
-fun main(args: Array<String>) {
-    println("Hello World!")
+fun main() {
+    println("Welcome to Bowling Program the input file should be at resources folder with the sample.txt name")
     val main = Main()
     main.execute()
 }
