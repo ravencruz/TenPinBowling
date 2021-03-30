@@ -7,17 +7,16 @@ import game.ScoreSheet
 import java.io.File
 import java.lang.NumberFormatException
 
-class BowlingFrameFileReader {
+class BowlingFrameParser {
 
     /**
      * TODO s
      * que se de cuenta que no debe procesar las lineas vacias
      */
-    fun readFramesFromFile(fileName: String): List<ScoreSheet> {
+    fun readFrames(fileLines: List<String>): List<ScoreSheet> {
 
         val playerFrames = mutableMapOf<String, ScoreSheet>()
 
-        val fileLines = readFileAsLinesUsingUseLines(fileName)
         fileLines.forEach {
             val tuplePlayerScore = it.split(Regex("\\s+"))
             val playerName = tuplePlayerScore[0]
@@ -49,5 +48,4 @@ class BowlingFrameFileReader {
         return playerFrames.map { it.value }
     }
 
-    fun readFileAsLinesUsingUseLines(fileName: String): List<String> = File(fileName).useLines { it.toList() }
 }
