@@ -28,8 +28,7 @@ class BowlingFrameParser {
     private fun getBallRoll(tuplePlayerScore: PlayerScoreTuple) =
         tuplePlayerScore.score
 
-    private fun hasData(inputLine : String) = inputLine.isNotBlank() && inputLine.isNotEmpty()
-
+    private fun hasData(inputLine: String) = inputLine.isNotBlank() && inputLine.isNotEmpty()
 
 
 }

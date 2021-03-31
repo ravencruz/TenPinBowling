@@ -62,20 +62,20 @@ data class BowlingFrame(
     }
 
     fun getFirstValueOrZero(): Int {
-        val ballRoll = (if (first == GameConstants.FRAME_SCORE_FOUL) 0 else first?.toIntOrNull() ?: 0)
-        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, first))
-        return ballRoll
+        return evaluateAttributeValue(first)
     }
 
     fun getSecondValueOrZero(): Int {
-        val ballRoll = if (second == GameConstants.FRAME_SCORE_FOUL) 0 else second?.toIntOrNull() ?: 0
-        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, second))
-        return ballRoll
+        return evaluateAttributeValue(second)
     }
 
     fun getThirdValueOrZero(): Int {
-        val ballRoll = if (third == GameConstants.FRAME_SCORE_FOUL) 0 else third?.toIntOrNull() ?: 0
-        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, third))
+        return evaluateAttributeValue(third)
+    }
+
+    private fun evaluateAttributeValue(value: String?): Int {
+        val ballRoll = (if (value == GameConstants.FRAME_SCORE_FOUL) 0 else value?.toIntOrNull() ?: 0)
+        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, value))
         return ballRoll
     }
 
