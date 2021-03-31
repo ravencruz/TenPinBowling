@@ -1,13 +1,15 @@
 package core
 
+import constants.ErrorMessage
 import constants.GameConstants
+import exceptions.BowlingException
 
 data class BowlingFrame(
     val position: Int,
 
-    var first: Int? = null,
-    var second: Int? = null,
-    var third: Int? = null,
+    var first: String? = null,
+    var second: String? = null,
+    var third: String? = null,
 
     var frameScore: Int = 0,
     var accumulativeScore: Int = 0,
@@ -17,7 +19,7 @@ data class BowlingFrame(
 
         return if (position == GameConstants.FRAME_LIMIT) {
 
-            if (first == GameConstants.ALL_PINS_DOWN_VALUE)
+            if (first == GameConstants.ALL_PINS_DOWN_STRING_VALUE)
                 second != null && third != null
             else first != null && second != null
 
@@ -26,19 +28,21 @@ data class BowlingFrame(
             if (first != null && second != null) {
                 true
             } else {
-                first == GameConstants.ALL_PINS_DOWN_VALUE
+                first == GameConstants.ALL_PINS_DOWN_STRING_VALUE
             }
         }
 
     }
 
-    //TODO remove !!
-    fun spare() = first != null && second != null && (first!! + second!!) == GameConstants.ALL_PINS_DOWN_VALUE
+    fun spare() = first != null
+            && second != null
+            && (getFirstValueOrZero() + getSecondValueOrZero()) == GameConstants.ALL_PINS_DOWN_VALUE
 
-    fun strike() = first == GameConstants.ALL_PINS_DOWN_VALUE
+    fun strike() = first == GameConstants.ALL_PINS_DOWN_STRING_VALUE
 
-    fun notSpareNotStrike() =
-        first != null && second != null && (first!! + second!!) < GameConstants.ALL_PINS_DOWN_VALUE
+    fun notSpareNotStrike() = first != null
+            && second != null
+            && (getFirstValueOrZero() + getSecondValueOrZero()) < GameConstants.ALL_PINS_DOWN_VALUE
 
 
     fun getPinFallsAsString(): String {
@@ -57,4 +61,23 @@ data class BowlingFrame(
         return "\t$accumulativeScore\t"
     }
 
+    fun getFirstValueOrZero(): Int {
+        return evaluateAttributeValue(first)
+    }
+
+    fun getSecondValueOrZero(): Int {
+        return evaluateAttributeValue(second)
+    }
+
+    fun getThirdValueOrZero(): Int {
+        return evaluateAttributeValue(third)
+    }
+
+    private fun evaluateAttributeValue(value: String?): Int {
+        val ballRoll = (if (value == GameConstants.FRAME_SCORE_FOUL) 0 else value?.toIntOrNull() ?: 0)
+        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, value))
+        return ballRoll
+    }
+
+    private fun invalidScoreValue(scoreValue: Int) = scoreValue > GameConstants.FRAME_LIMIT || scoreValue < 0
 }

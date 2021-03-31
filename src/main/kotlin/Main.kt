@@ -1,7 +1,6 @@
 import constants.GameConstants
 import exceptions.BowlingException
 import game.ScoreCalculator
-import game.ScoreSheet
 import reader.BowlingFileReader
 import reader.BowlingFrameParser
 
@@ -11,7 +10,7 @@ class Main {
     fun execute(file: String) {
         val lines = BowlingFileReader.readFileAsLinesUsingBufferedReader(file)
         val parser = BowlingFrameParser()
-        val scores: List<ScoreSheet> = parser.readFrames(lines)
+        val scores = parser.readFrames(lines)
 
         println(getHeader())
         scores.forEach {

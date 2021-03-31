@@ -1,8 +1,5 @@
 package reader
 
-import constants.ErrorMessage
-import constants.GameConstants
-import exceptions.BowlingException
 import game.ScoreSheet
 
 class BowlingFrameParser {
@@ -15,9 +12,7 @@ class BowlingFrameParser {
             if (hasData(it)) {
                 val tuplePlayerScore = parsePlayerScore(it)
                 val frame = playerFrames.getOrPut(tuplePlayerScore.player) { ScoreSheet(tuplePlayerScore.player) }
-
                 val ballRoll = getBallRoll(tuplePlayerScore)
-                if (invalidScoreValue(ballRoll)) throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
                 frame.setShot(ballRoll)
             }
         }
@@ -31,14 +26,9 @@ class BowlingFrameParser {
     }
 
     private fun getBallRoll(tuplePlayerScore: PlayerScoreTuple) =
-        try {
-            if (tuplePlayerScore.score == GameConstants.FRAME_SCORE_FOUL) 0 else tuplePlayerScore.score.toInt()
-        } catch (nfe: NumberFormatException) {
-            throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
-        }
+        tuplePlayerScore.score
 
-    private fun hasData(inputLine : String) = inputLine.isNotBlank() && inputLine.isNotEmpty()
+    private fun hasData(inputLine: String) = inputLine.isNotBlank() && inputLine.isNotEmpty()
 
-    private fun invalidScoreValue(scoreValue: Int) = scoreValue > 10 || scoreValue < 0
 
 }

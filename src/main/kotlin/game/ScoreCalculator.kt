@@ -16,9 +16,9 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
     private fun calculateIndividualFrameScore() {
         scoreSheet.frames.forEach { frame ->
 
-            val currentFirst = frame.first ?: 0
-            val currentSecond = frame.second ?: 0
-            val currentThird = frame.third ?: 0
+            val currentFirst = frame.getFirstValueOrZero()
+            val currentSecond = frame.getSecondValueOrZero()
+            val currentThird = frame.getThirdValueOrZero()
 
             frame.frameScore =
                 when {
@@ -48,7 +48,7 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
     private fun getNextScoreForSpare(index: Int): Int {
         return if (index + 1 < scoreSheet.frames.size)
-            scoreSheet.frames[index + 1].first!! //TODO remove !!
+            scoreSheet.frames[index + 1].getFirstValueOrZero()
         else 0
     }
 
@@ -61,10 +61,10 @@ class ScoreCalculator(private val scoreSheet: ScoreSheet) {
 
                 GameConstants.ALL_PINS_DOWN_VALUE +
                     if (currentIndex + 2 < scoreSheet.frames.size)
-                        scoreSheet.frames[currentIndex + 2].first!! //TODO remove!!
+                        scoreSheet.frames[currentIndex + 2].getFirstValueOrZero()
 
                     else if (currentIndex == 10-1-1)//penultimo
-                        scoreSheet.frames[currentIndex + 1].second!! //TODO remove!!
+                        scoreSheet.frames[currentIndex + 1].getSecondValueOrZero()
                     else 0
 
             } else {
