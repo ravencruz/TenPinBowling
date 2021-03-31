@@ -26,6 +26,5 @@ which contains the result of several players used for unit tests
 
 
 ## Known Bugs
-    - Only handles input with 10 frames
-    - If there is a FOUL in the score it is shown as a 0
+
 

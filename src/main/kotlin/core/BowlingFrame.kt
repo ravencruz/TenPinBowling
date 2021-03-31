@@ -5,9 +5,9 @@ import constants.GameConstants
 data class BowlingFrame(
     val position: Int,
 
-    var first: Int? = null,
-    var second: Int? = null,
-    var third: Int? = null,
+    var first: String? = null,
+    var second: String? = null,
+    var third: String? = null,
 
     var frameScore: Int = 0,
     var accumulativeScore: Int = 0,
@@ -17,7 +17,7 @@ data class BowlingFrame(
 
         return if (position == GameConstants.FRAME_LIMIT) {
 
-            if (first == GameConstants.ALL_PINS_DOWN_VALUE)
+            if (first == GameConstants.ALL_PINS_DOWN_STRING_VALUE)
                 second != null && third != null
             else first != null && second != null
 
@@ -26,19 +26,21 @@ data class BowlingFrame(
             if (first != null && second != null) {
                 true
             } else {
-                first == GameConstants.ALL_PINS_DOWN_VALUE
+                first == GameConstants.ALL_PINS_DOWN_STRING_VALUE
             }
         }
 
     }
 
-    //TODO remove !!
-    fun spare() = first != null && second != null && (first!! + second!!) == GameConstants.ALL_PINS_DOWN_VALUE
+    fun spare() = first != null
+            && second != null
+            && (getFirstValueOrZero() + getSecondValueOrZero()) == GameConstants.ALL_PINS_DOWN_VALUE
 
-    fun strike() = first == GameConstants.ALL_PINS_DOWN_VALUE
+    fun strike() = first == GameConstants.ALL_PINS_DOWN_STRING_VALUE
 
-    fun notSpareNotStrike() =
-        first != null && second != null && (first!! + second!!) < GameConstants.ALL_PINS_DOWN_VALUE
+    fun notSpareNotStrike() = first != null
+                && second != null
+                && (getFirstValueOrZero() + getSecondValueOrZero()) < GameConstants.ALL_PINS_DOWN_VALUE
 
 
     fun getPinFallsAsString(): String {
@@ -57,4 +59,15 @@ data class BowlingFrame(
         return "\t$accumulativeScore\t"
     }
 
+    fun getFirstValueOrZero(): Int {
+        return if(first == GameConstants.FRAME_SCORE_FOUL) 0 else first?.toInt() ?: 0
+    }
+
+    fun getSecondValueOrZero(): Int {
+        return if(second == GameConstants.FRAME_SCORE_FOUL) 0 else second?.toInt() ?: 0
+    }
+
+    fun getThirdValueOrZero(): Int {
+        return if(third == GameConstants.FRAME_SCORE_FOUL) 0 else third?.toInt() ?: 0
+    }
 }

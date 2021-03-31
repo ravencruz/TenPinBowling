@@ -17,7 +17,7 @@ class BowlingFrameParser {
                 val frame = playerFrames.getOrPut(tuplePlayerScore.player) { ScoreSheet(tuplePlayerScore.player) }
 
                 val ballRoll = getBallRoll(tuplePlayerScore)
-                if (invalidScoreValue(ballRoll)) throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
+                //if (invalidScoreValue(ballRoll)) throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
                 frame.setShot(ballRoll)
             }
         }
@@ -31,11 +31,12 @@ class BowlingFrameParser {
     }
 
     private fun getBallRoll(tuplePlayerScore: PlayerScoreTuple) =
-        try {
-            if (tuplePlayerScore.score == GameConstants.FRAME_SCORE_FOUL) 0 else tuplePlayerScore.score.toInt()
-        } catch (nfe: NumberFormatException) {
-            throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
-        }
+        tuplePlayerScore.score
+//        try {
+//            if (tuplePlayerScore.score == GameConstants.FRAME_SCORE_FOUL) 0 else tuplePlayerScore.score.toInt()
+//        } catch (nfe: NumberFormatException) {
+//            throw BowlingException(ErrorMessage.INVALID_SCORE_VALUE)
+//        }
 
     private fun hasData(inputLine : String) = inputLine.isNotBlank() && inputLine.isNotEmpty()
 

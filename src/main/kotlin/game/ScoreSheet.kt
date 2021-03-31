@@ -9,7 +9,7 @@ class ScoreSheet(val player: String) {
         BowlingFrame(it + 1)
     }
 
-    fun setShot(shotScore: Int) {
+    fun setShot(shotScore: String) {
 
         val currentFrame = getNextFrame()
         currentFrame?.let {
