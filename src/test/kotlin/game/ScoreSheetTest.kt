@@ -1,5 +1,6 @@
 package game
 
+import constants.ErrorMessage
 import constants.GameConstants
 import exceptions.BowlingException
 import org.junit.jupiter.api.Assertions
@@ -7,9 +8,42 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import reader.BowlingFileReader
 import reader.BowlingFrameParser
+import kotlin.test.assertEquals
 
 
 internal class ScoreSheetTest {
+
+    @Test
+    fun `out of range score value should throw exception`() {
+        val reader = BowlingFrameParser()
+        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_incorrect_value.txt")
+
+        val frameList: List<ScoreSheet> = reader.readFrames(lines)
+        Assertions.assertEquals(1, frameList.size)
+
+        val carlScoreSheet = frameList[0]
+        val calculator = ScoreCalculator(carlScoreSheet)
+
+        println(carlScoreSheet)
+        val exception = assertThrows<BowlingException> { calculator.fillScores() }
+        assertEquals(ErrorMessage.INVALID_SCORE_VALUE, exception.message)
+    }
+
+//    @Test
+//    fun `incorrect value in input should throw exception`() {
+//        val reader = BowlingFrameParser()
+//        val lines = BowlingFileReader.readFileAsLinesUsingUseLines("/bad_input_not_number.txt")
+//
+//        val frameList: List<ScoreSheet> = reader.readFrames(lines)
+//        Assertions.assertEquals(1, frameList.size)
+//
+//        val carlScoreSheet = frameList[0]
+//        val calculator = ScoreCalculator(carlScoreSheet)
+//
+//        println(carlScoreSheet)
+//        val exception = assertThrows<BowlingException> { calculator.fillScores() }
+//        assertEquals(ErrorMessage.INVALID_SCORE_VALUE, exception.message)
+//    }
 
     @Test
     fun `frame with less than 10 points should get score from frame itself`() {

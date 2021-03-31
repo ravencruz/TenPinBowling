@@ -1,6 +1,8 @@
 package core
 
+import constants.ErrorMessage
 import constants.GameConstants
+import exceptions.BowlingException
 
 data class BowlingFrame(
     val position: Int,
@@ -39,8 +41,8 @@ data class BowlingFrame(
     fun strike() = first == GameConstants.ALL_PINS_DOWN_STRING_VALUE
 
     fun notSpareNotStrike() = first != null
-                && second != null
-                && (getFirstValueOrZero() + getSecondValueOrZero()) < GameConstants.ALL_PINS_DOWN_VALUE
+            && second != null
+            && (getFirstValueOrZero() + getSecondValueOrZero()) < GameConstants.ALL_PINS_DOWN_VALUE
 
 
     fun getPinFallsAsString(): String {
@@ -60,14 +62,22 @@ data class BowlingFrame(
     }
 
     fun getFirstValueOrZero(): Int {
-        return if(first == GameConstants.FRAME_SCORE_FOUL) 0 else first?.toInt() ?: 0
+        val ballRoll = (if (first == GameConstants.FRAME_SCORE_FOUL) 0 else first?.toIntOrNull() ?: 0)
+        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, first))
+        return ballRoll
     }
 
     fun getSecondValueOrZero(): Int {
-        return if(second == GameConstants.FRAME_SCORE_FOUL) 0 else second?.toInt() ?: 0
+        val ballRoll = if (second == GameConstants.FRAME_SCORE_FOUL) 0 else second?.toIntOrNull() ?: 0
+        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, second))
+        return ballRoll
     }
 
     fun getThirdValueOrZero(): Int {
-        return if(third == GameConstants.FRAME_SCORE_FOUL) 0 else third?.toInt() ?: 0
+        val ballRoll = if (third == GameConstants.FRAME_SCORE_FOUL) 0 else third?.toIntOrNull() ?: 0
+        if (invalidScoreValue(ballRoll)) throw BowlingException(String.format(ErrorMessage.INVALID_SCORE_VALUE, third))
+        return ballRoll
     }
+
+    private fun invalidScoreValue(scoreValue: Int) = scoreValue > GameConstants.FRAME_LIMIT || scoreValue < 0
 }
