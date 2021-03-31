@@ -26,5 +26,5 @@ which contains the result of several players used for unit tests
 
 
 ## Known Bugs
-
+ - Incorrect process of bad input data and N instead of a Number
 
